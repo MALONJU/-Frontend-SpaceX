@@ -1,21 +1,29 @@
 <template>
   <div class="card mb-4">
     <div class="card-body">
-      <label for="filter" class="form-label">Filtrer les lancements :</label>
+      <label for="filter" class="form-label fw-bold">Filtrer les lancements :</label>
       <select id="filter" class="form-select mb-3" v-model="filter" @change="fetchLaunches">
         <option value="all">Tous les lancements</option>
         <option value="success">Lancements réussis</option>
         <option value="fail">Lancements échoués</option>
       </select>
-      <ul class="list-group">
+      <ul class="list-group mb-3">
         <li
           v-for="launch in launches"
           :key="launch.id"
-          class="list-group-item list-group-item-action"
+          class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
           @click="selectLaunch(launch)"
           style="cursor:pointer"
         >
-          {{ launch.name }} — {{ new Date(launch.date_utc).toLocaleDateString('fr-FR') }}
+          <span>
+            <span class="fw-bold">{{ launch.name }}</span>
+            <span class="text-muted ms-2">{{ new Date(launch.date_utc).toLocaleDateString('fr-FR') }}</span>
+          </span>
+          <span>
+            <span v-if="launch.success === true" class="badge bg-success">Succès</span>
+            <span v-else-if="launch.success === false" class="badge bg-danger">Échec</span>
+            <span v-else class="badge bg-secondary">À venir</span>
+          </span>
         </li>
       </ul>
       <div v-if="loading" class="mt-3 text-center">

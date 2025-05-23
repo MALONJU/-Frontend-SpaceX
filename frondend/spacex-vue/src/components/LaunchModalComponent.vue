@@ -9,15 +9,17 @@
         <div class="modal-body">
           <p><strong>Date :</strong> {{ formattedDate }}</p>
           <p><strong>Détails :</strong> {{ launch.details || 'Aucun détail.' }}</p>
-          <img v-if="launch.links?.patch?.small" :src="launch.links.patch.small" class="mb-2" style="max-width:100px;" />
+          <div class="text-center mb-3">
+            <img v-if="launch.links?.patch?.small" :src="launch.links.patch.small" class="img-fluid" style="max-height:100px;" />
+          </div>
           <div v-if="launch.links?.article">
-            <a :href="launch.links.article" target="_blank" class="btn btn-link">Voir l'article</a>
+            <a :href="launch.links.article" target="_blank" class="btn btn-outline-primary btn-sm mb-2">Voir l'article</a>
           </div>
           <div class="form-check form-switch my-2">
             <input class="form-check-input" type="checkbox" v-model="showVideo" id="videoSwitch">
             <label class="form-check-label" for="videoSwitch">Afficher la vidéo YouTube</label>
           </div>
-          <div v-if="showVideo && launch.links?.youtube_id">
+          <div v-if="showVideo && launch.links?.youtube_id" class="mb-3">
             <iframe
               width="100%"
               height="315"
@@ -46,7 +48,7 @@ export default defineComponent({
   setup(props) {
     const showVideo = ref(false)
     const formattedDate = computed(() =>
-      props.launch.date_utc ? new Date(props.launch.date_utc).toLocaleDateString('fr-FR') : ''
+      props.launch.date_utc ? new Date(props.launch.date_utc).toLocaleDateString('fr-FR', { dateStyle: 'full', timeStyle: 'short' }) : ''
     )
     return { showVideo, formattedDate }
   }

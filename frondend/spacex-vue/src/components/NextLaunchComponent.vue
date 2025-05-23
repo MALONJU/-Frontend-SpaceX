@@ -1,15 +1,35 @@
 <template>
-  <div class="card mb-4">
+  <div class="card shadow-lg mb-4 border-primary">
+    <div class="card-header bg-primary text-white">
+      <h2 class="card-title mb-0">🚀 Prochain lancement</h2>
+    </div>
     <div class="card-body">
-      <h2 class="card-title">Prochain lancement</h2>
       <div v-if="launch">
-        <p><strong>Nom :</strong> {{ launch.name }}</p>
-        <p><strong>Date :</strong> {{ formattedDate }}</p>
-        <p><strong>Décompte :</strong> {{ countdown }} secondes</p>
+        <ul class="list-group list-group-flush mb-3">
+          <li class="list-group-item">
+            <strong>Nom :</strong>
+            <span class="text-primary ms-2">{{ launch.name }}</span>
+          </li>
+          <li class="list-group-item">
+            <strong>Date :</strong>
+            <span class="ms-2">{{ formattedDate }}</span>
+          </li>
+          <li class="list-group-item">
+            <strong>Décompte :</strong>
+            <span class="badge bg-success ms-2 fs-5">{{ countdown }}</span>
+            <span class="ms-1">secondes</span>
+          </li>
+        </ul>
+        <div v-if="launch.links?.patch?.small" class="text-center">
+          <img :src="launch.links.patch.small" alt="Mission patch" class="img-fluid" style="max-height:80px;" />
+        </div>
       </div>
       <div v-else>
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Chargement...</span>
+        <div class="d-flex flex-column align-items-center py-4">
+          <div class="spinner-border text-primary mb-2" role="status">
+            <span class="visually-hidden">Chargement...</span>
+          </div>
+          <span>Chargement du prochain lancement...</span>
         </div>
       </div>
     </div>
@@ -50,7 +70,7 @@ export default defineComponent({
     })
 
     const formattedDate = computed(() =>
-      launch.value ? new Date(launch.value.date_utc).toLocaleString('fr-FR') : ''
+      launch.value ? new Date(launch.value.date_utc).toLocaleString('fr-FR', { dateStyle: 'full', timeStyle: 'short' }) : ''
     )
 
     return {
